@@ -1,0 +1,63 @@
+USE GRAPH FraudGraph
+
+// 1. Retrieve transaction history for a card
+CREATE QUERY get_card_history(VERTEX<Card> target_card, INT limit_txns = 50) FOR GRAPH FraudGraph {
+  ListAccum<VERTEX<Transaction>> @txns;
+  
+  Start = {target_card};
+  Txns = SELECT t FROM Start:s -(MADE:e)-> Transaction:t
+         ACCUM s.@txns += t
+         ORDER BY t.ts DESC
+         LIMIT limit_txns;
+         
+  PRINT Txns[Txns.id, Txns.ts, Txns.amt, Txns.product_cd, Txns.channel, Txns.risk_score];
+}
+
+// 2. Discover multi-card device rings (shared device profiles)
+CREATE QUERY get_device_neighbors(VERTEX<DeviceProfile> target_device) FOR GRAPH FraudGraph {
+  ListAccum<VERTEX<Card>> @connected_cards;
+  ListAccum<VERTEX<ClosedCase>> @connected_cases;
+  
+  Start = {target_device};
+  
+  // Cards that used this device
+  Cards = SELECT c FROM Start:s -(USED_DEVICE:e)-> Card:c;
+  
+  // Closed cases involving transactions from this device
+  Txns = SELECT t FROM Start:s <-(FROM_DEVICE:e)- Transaction:t;
+  Cases = SELECT cc FROM Txns:t <-(INVOLVES:e)- ClosedCase:cc;
+  
+  PRINT Cards[Cards.id, Cards.network, Cards.card_type],
+        Cases[Cases.id, Cases.outcome, Cases.pattern, Cases.exposure_usd, Cases.analyst_notes];
+}
+
+// 3. Customer billing region profile (detect out-of-region use)
+CREATE QUERY get_customer_regions(VERTEX<Customer> target_customer) FOR GRAPH FraudGraph {
+  MapAccum<STRING, INT> @@region_counts;
+  
+  Start = {target_customer};
+  Cards = SELECT c FROM Start:s -(OWNS:e)-> Card:c;
+  Txns = SELECT t FROM Cards:c -(MADE:e)-> Transaction:t;
+  Regions = SELECT r FROM Txns:t -(BILLED_IN:e)-> BillingRegion:r
+            ACCUM @@region_counts += (r.id -> 1);
+            
+  PRINT @@region_counts;
+}
+
+// 4. Retrieve connected closed cases for a card or its devices
+CREATE QUERY get_card_prior_cases(VERTEX<Card> target_card) FOR GRAPH FraudGraph {
+  Start = {target_card};
+  
+  // Direct closed cases on this card
+  DirectCases = SELECT cc FROM Start:s <-(ON_CARD:e)- ClosedCase:cc;
+  
+  // Connected cases via shared devices
+  Devices = SELECT d FROM Start:s -(USED_DEVICE:e)-> DeviceProfile:d;
+  ConnectedTxns = SELECT t FROM Devices:d <-(FROM_DEVICE:e)- Transaction:t;
+  DeviceCases = SELECT cc FROM ConnectedTxns:t <-(INVOLVES:e)- ClosedCase:cc;
+  
+  PRINT DirectCases[DirectCases.id, DirectCases.outcome, DirectCases.pattern, DirectCases.exposure_usd, DirectCases.analyst_notes],
+        DeviceCases[DeviceCases.id, DeviceCases.outcome, DeviceCases.pattern, DeviceCases.exposure_usd, DeviceCases.analyst_notes];
+}
+
+INSTALL QUERY get_card_history, get_device_neighbors, get_customer_regions, get_card_prior_cases

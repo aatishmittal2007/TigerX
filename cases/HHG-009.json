@@ -1,0 +1,77 @@
+{
+  "case_id": "HHG-009",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.85,
+    "pattern": "card_not_present_fraud",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3581141"
+    ],
+    "first_suspicious_txn_id": "3581141",
+    "connected_card_ids": [],
+    "connected_device_profiles": [],
+    "exposure_usd": 30.02,
+    "evidence": [
+      {
+        "claim": "Cardholder explicitly reported unrecognized purchase of $30.02",
+        "source": "customer",
+        "ref": "trigger:customer_report(HHG-009)",
+        "entity_ids": [
+          "3581141"
+        ]
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Investigation for alert HHG-009 concluded with verdict fraud (probability 0.85). Pattern identified as card_not_present_fraud. Total exposure evaluated at $30.02. Policy rules applied resulting in 2 recommended action(s).",
+    "written_to_graph": true,
+    "graph_case_id": "HHG-009"
+  },
+  "evidence_requests": [
+    {
+      "type": "customer_validation",
+      "asked_after_step": 2,
+      "assumed_response": "Customer confirmed report: transaction was not authorized."
+    }
+  ],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "High confidence fraud assessment (0.78); exposure $30.02"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "Open internal fraud case with supporting evidence"
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "R2: customer denied transaction; exposure $30.02"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R2: confirmed unauthorized use recorded internally"
+      }
+    ],
+    "what_changed": "Customer dispute validated against account history; confirmed card compromise."
+  },
+  "sar": {
+    "file": false,
+    "reason": "",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0.0,
+    "activity_dates": []
+  },
+  "stop_reason": "Customer verification settled the verdict; evidence sufficient under policy stopping criteria.",
+  "tool_calls": 5,
+  "tokens": 570,
+  "latency_s": 0.0
+}

@@ -1,0 +1,121 @@
+=== 1. CASE PACK ANALYSIS ===
+Total benchmark cases: 20
+Unique customers in benchmark: 20
+Unique cards in benchmark: 20
+
+=== 2. MATCHING FLAGGED TRANSACTIONS IN TRANSACTIONS.CSV ===
+Found 20 out of 20 flagged transactions.
+
+=== 3. CHECKING IDENTITY.CSV FOR FLAGGED AND CUSTOMER TRANSACTIONS ===
+Flagged txns with identity records (online): 14 / 20
+Customer txns with identity records: 11800 / 26643
+
+=== 4. SUMMARY PER BENCHMARK CASE ===
+
+[HHG-001] Trigger: risk_score | Cust: C12382 | Card: C12382-K1 | Flagged Txn: 3514030
+   Amt: $77.07 | Prod: W | Channel: in_person | Risk: 0.61 | Addr1: 444.0
+   Total txns for customer C12382 in history: 422
+
+[HHG-002] Trigger: risk_score | Cust: C11891 | Card: C11891-K1 | Flagged Txn: 3478782
+   Amt: $292.36 | Prod: C | Channel: online | Risk: 0.79 | Addr1: 
+   Total txns for customer C11891 in history: 44
+
+[HHG-003] Trigger: customer_report | Cust: C08623 | Card: C08623-K2 | Flagged Txn: 3530164
+   Amt: $49.00 | Prod: W | Channel: in_person | Risk: 0.40 | Addr1: 330.0
+   Total txns for customer C08623 in history: 1140
+
+[HHG-004] Trigger: customer_report | Cust: C08106 | Card: C08106-K1 | Flagged Txn: 3583227
+   Amt: $128.33 | Prod: C | Channel: online | Risk: 0.34 | Addr1: 
+   Device:  |  | firefox 47.0 | 
+   id_15 (New/Found): New | id_23 (Proxy): 
+   Total txns for customer C08106 in history: 216
+
+[HHG-005] Trigger: risk_score | Cust: C02923 | Card: C02923-K1 | Flagged Txn: 3523199
+   Amt: $100.07 | Prod: R | Channel: online | Risk: 0.54 | Addr1: 330.0
+   Device: iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768
+   id_15 (New/Found): New | id_23 (Proxy): 
+   Total txns for customer C02923 in history: 92
+
+[HHG-006] Trigger: customer_report | Cust: C07297 | Card: C07297-K1 | Flagged Txn: 3476682
+   Amt: $482.12 | Prod: C | Channel: online | Risk: 0.25 | Addr1: 264.0
+   Device: Trident/7.0 | Windows 7 | ie 11.0 for desktop | 1920x1080
+   id_15 (New/Found): New | id_23 (Proxy): 
+   Total txns for customer C07297 in history: 261
+
+[HHG-007] Trigger: risk_score | Cust: C09933 | Card: C09933-K2 | Flagged Txn: 3514948
+   Amt: $111.92 | Prod: W | Channel: in_person | Risk: 0.87 | Addr1: 264.0
+   Total txns for customer C09933 in history: 2792
+
+[HHG-008] Trigger: customer_report | Cust: C13171 | Card: C13171-K2 | Flagged Txn: 3558054
+   Amt: $55.68 | Prod: C | Channel: online | Risk: 0.38 | Addr1: 
+   Device:  |  | chrome 66.0 | 
+   id_15 (New/Found): Found | id_23 (Proxy): 
+   Total txns for customer C13171 in history: 928
+
+[HHG-009] Trigger: customer_report | Cust: C08299 | Card: C08299-K1 | Flagged Txn: 3581141
+   Amt: $30.02 | Prod: S | Channel: online | Risk: 0.28 | Addr1: 203.0
+   Device:  |  |  | 
+   id_15 (New/Found): Found | id_23 (Proxy): 
+   Total txns for customer C08299 in history: 56
+
+[HHG-010] Trigger: risk_score | Cust: C10434 | Card: C10434-K1 | Flagged Txn: 3506725
+   Amt: $1000.03 | Prod: R | Channel: online | Risk: 0.90 | Addr1: 469.0
+   Device: Windows | Windows 10 | edge 16.0 | 1366x768
+   id_15 (New/Found): New | id_23 (Proxy): 
+   Total txns for customer C10434 in history: 36
+
+[HHG-011] Trigger: customer_report | Cust: C11923 | Card: C11923-K2 | Flagged Txn: 3583368
+   Amt: $131.30 | Prod: C | Channel: online | Risk: 0.39 | Addr1: 
+   Device: SM-G610F Build/NRD90M |  | chrome 66.0 for android | 
+   id_15 (New/Found): New | id_23 (Proxy): 
+   Total txns for customer C11923 in history: 10361
+
+[HHG-012] Trigger: risk_score | Cust: C05876 | Card: C05876-K2 | Flagged Txn: 3553342
+   Amt: $30.91 | Prod: W | Channel: in_person | Risk: 0.55 | Addr1: 494.0
+   Total txns for customer C05876 in history: 991
+
+[HHG-013] Trigger: risk_score | Cust: C07671 | Card: C07671-K2 | Flagged Txn: 3526826
+   Amt: $35.66 | Prod: C | Channel: online | Risk: 0.76 | Addr1: 
+   Device: Windows |  | chrome 66.0 | 
+   id_15 (New/Found): New | id_23 (Proxy): 
+   Total txns for customer C07671 in history: 1569
+
+[HHG-014] Trigger: analyst_request | Cust: C13487 | Card: C13487-K1 | Flagged Txn: 3478561
+   Amt: $74.96 | Prod: C | Channel: online | Risk: 0.05 | Addr1: 191.0
+   Device: SM-G935F Build/NRD90M | Android 7.0 | chrome 62.0 for android | 1920x1080
+   id_15 (New/Found): New | id_23 (Proxy): IP_PROXY:ANONYMOUS
+   Total txns for customer C13487 in history: 85
+
+[HHG-015] Trigger: risk_score | Cust: C03042 | Card: C03042-K1 | Flagged Txn: 3464869
+   Amt: $599.94 | Prod: R | Channel: online | Risk: 0.77 | Addr1: 327.0
+   Device: Trident/7.0 | Windows 8.1 | ie 11.0 for desktop | 1680x1050
+   id_15 (New/Found): New | id_23 (Proxy): 
+   Total txns for customer C03042 in history: 79
+
+[HHG-016] Trigger: customer_report | Cust: C09988 | Card: C09988-K1 | Flagged Txn: 3534820
+   Amt: $59.67 | Prod: C | Channel: online | Risk: 0.37 | Addr1: 
+   Device: Windows |  | edge 16.0 | 
+   id_15 (New/Found): New | id_23 (Proxy): 
+   Total txns for customer C09988 in history: 61
+
+[HHG-017] Trigger: risk_score | Cust: C04570 | Card: C04570-K1 | Flagged Txn: 3450629
+   Amt: $100.09 | Prod: R | Channel: online | Risk: 0.57 | Addr1: 204.0
+   Device: Windows | Windows 10 | chrome 65.0 | 1920x1080
+   id_15 (New/Found): Found | id_23 (Proxy): IP_PROXY:HIDDEN
+   Total txns for customer C04570 in history: 59
+
+[HHG-018] Trigger: customer_report | Cust: C02354 | Card: C02354-K2 | Flagged Txn: 3491361
+   Amt: $39.08 | Prod: W | Channel: in_person | Risk: 0.48 | Addr1: 126.0
+   Total txns for customer C02354 in history: 7091
+
+[HHG-019] Trigger: risk_score | Cust: C07987 | Card: C07987-K2 | Flagged Txn: 3503878
+   Amt: $99.92 | Prod: R | Channel: online | Risk: 0.90 | Addr1: 264.0
+   Device: Windows | other | chrome 61.0 | 1280x720
+   id_15 (New/Found): New | id_23 (Proxy): 
+   Total txns for customer C07987 in history: 248
+
+[HHG-020] Trigger: risk_score | Cust: C12265 | Card: C12265-K2 | Flagged Txn: 3509359
+   Amt: $125.08 | Prod: R | Channel: online | Risk: 0.52 | Addr1: 264.0
+   Device: Trident/7.0 | Windows 10 | ie 11.0 for desktop | 1920x1080
+   id_15 (New/Found): New | id_23 (Proxy): 
+   Total txns for customer C12265 in history: 112

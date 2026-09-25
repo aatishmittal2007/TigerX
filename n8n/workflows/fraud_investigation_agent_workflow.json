@@ -1,0 +1,189 @@
+{
+  "name": "TigerGraph Agentic Fraud Investigation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "investigate-case",
+        "options": {}
+      },
+      "id": "node-webhook-trigger",
+      "name": "Investigation Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300],
+      "webhookId": "investigate-case"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract incoming trigger parameters\nconst body = $input.first().json.body || $input.first().json;\nreturn [{\n  json: {\n    case_id: body.case_id || 'HHG-014',\n    flagged_txn_id: body.flagged_txn_id || '3478561',\n    customer_id: body.customer_id || 'C13487',\n    card_id: body.card_id || 'C13487-K1',\n    trigger_type: body.trigger_type || 'analyst_request',\n    trigger_text: body.trigger_text || 'Analyst request: review device ring',\n    risk_score: body.risk_score || null,\n    audit_trail: [\n      { ts: new Date().toISOString(), event: 'CASE_OPENED', details: `Alert initialized for case ${body.case_id}` }\n    ]\n  }\n}];"
+      },
+      "id": "node-init-case",
+      "name": "Initialize Case & Audit",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:8000/api/internal/graph-evidence",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"case_id\": \"{{ $json.case_id }}\",\n  \"flagged_txn_id\": \"{{ $json.flagged_txn_id }}\",\n  \"card_id\": \"{{ $json.card_id }}\",\n  \"customer_id\": \"{{ $json.customer_id }}\"\n}",
+        "options": {}
+      },
+      "id": "node-fetch-graph",
+      "name": "TigerGraph MCP Evidence Fetch",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Synthesize graph traversal findings and assess uncertainty\nconst data = $input.first().json;\nconst devNeighbors = data.device_neighbors || {};\nconst connectedCards = devNeighbors.connected_cards || [];\nconst isMultiCard = connectedCards.length >= 2;\n\n// Uncertainty check: single weak signal requires verification\nconst isUncertain = data.single_signal_only || isMultiCard;\n\nreturn [{\n  json: {\n    ...data,\n    connected_cards: connectedCards,\n    requires_additional_evidence: isUncertain,\n    audit_event: isUncertain ? 'UNCERTAINTY_DETECTED' : 'EVIDENCE_CONFIDENT'\n  }\n}];"
+      },
+      "id": "node-uncertainty-eval",
+      "name": "Assess Uncertainty & Evidence Needs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [740, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.requires_additional_evidence }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "node-if-more-evidence",
+      "name": "Need Additional Evidence?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [960, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Simulate customer verification inquiry under Rule R1/R2\nconst data = $input.first().json;\nreturn [{\n  json: {\n    ...data,\n    evidence_request: {\n      type: 'customer_validation',\n      question: 'Did you authorize this transaction?',\n      response: 'Customer denied unauthorized activity and still retains physical card.'\n    },\n    audit_event: 'CUSTOMER_VERIFICATION_RECEIVED'\n  }\n}];"
+      },
+      "id": "node-request-evidence",
+      "name": "Simulate Evidence Action (R1)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1180, 200]
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:8000/api/internal/finalize-case",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "node-policy-finalize",
+      "name": "Policy Engine & NBA Finalization",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1400, 300]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "node-respond-webhook",
+      "name": "Return Case Deliverable",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1620, 300]
+    }
+  ],
+  "connections": {
+    "Investigation Trigger": {
+      "main": [
+        [
+          {
+            "node": "Initialize Case & Audit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initialize Case & Audit": {
+      "main": [
+        [
+          {
+            "node": "TigerGraph MCP Evidence Fetch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TigerGraph MCP Evidence Fetch": {
+      "main": [
+        [
+          {
+            "node": "Assess Uncertainty & Evidence Needs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assess Uncertainty & Evidence Needs": {
+      "main": [
+        [
+          {
+            "node": "Need Additional Evidence?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Need Additional Evidence?": {
+      "main": [
+        [
+          {
+            "node": "Simulate Evidence Action (R1)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Policy Engine & NBA Finalization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simulate Evidence Action (R1)": {
+      "main": [
+        [
+          {
+            "node": "Policy Engine & NBA Finalization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Policy Engine & NBA Finalization": {
+      "main": [
+        [
+          {
+            "node": "Return Case Deliverable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

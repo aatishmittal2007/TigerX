@@ -1,0 +1,117 @@
+{
+  "case_id": "HHG-011",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.88,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3583368"
+    ],
+    "first_suspicious_txn_id": "3583368",
+    "connected_card_ids": [
+      "C05595-K1",
+      "C05678-K1",
+      "C03938-K1"
+    ],
+    "connected_device_profiles": [
+      "SM-G610F Build/NRD90M |  | chrome 66.0 for android | "
+    ],
+    "exposure_usd": 131.3,
+    "evidence": [
+      {
+        "claim": "Transaction from device profile SM-G610F Build/NRD90M |  | chrome 66.0 for android |  shared across 3 other customer cards",
+        "source": "graph",
+        "ref": "query:device_neighbors(device_id=SM-G610F Build/NRD90M |  | chrome 66.0 for android | )",
+        "entity_ids": [
+          "C05595-K1",
+          "C05678-K1",
+          "C03938-K1"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-2649",
+      "CC-0141"
+    ],
+    "summary": "Investigation for alert HHG-011 concluded with verdict fraud (probability 0.88). Pattern identified as card_not_present_new_device. Total exposure evaluated at $131.30. Policy rules applied resulting in 4 recommended action(s).",
+    "written_to_graph": true,
+    "graph_case_id": "HHG-011"
+  },
+  "evidence_requests": [
+    {
+      "type": "customer_validation",
+      "asked_after_step": 2,
+      "assumed_response": "Customer confirmed report: transaction was not authorized."
+    }
+  ],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R6: multi-card coordinated activity detected"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "R6: compromised in shared origin ring; exposure $131.30"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "R6: shared infrastructure links to 3 connected cards"
+      },
+      {
+        "action": "MONITOR_CONNECTED_CARDS",
+        "route": "auto",
+        "reason": "R6: monitor connected cards: C05595-K1, C05678-K1, C03938-K1"
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "R2: customer denied transaction; exposure $131.30"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R2: confirmed unauthorized use recorded internally"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "R2: confirmed unauthorized use with shared device linking to 3 other card(s)"
+      },
+      {
+        "action": "MONITOR_CONNECTED_CARDS",
+        "route": "auto",
+        "reason": "R6: shared infrastructure links to C05595-K1, C05678-K1, C03938-K1"
+      }
+    ],
+    "what_changed": "Customer dispute validated against account history; confirmed card compromise."
+  },
+  "sar": {
+    "file": true,
+    "reason": "R2: confirmed unauthorized use with shared device linking to 3 other card(s)",
+    "narrative": "Between 2016-12-29 and 2016-12-29, card C11923-K2 belonging to customer C11923 was subject to unauthorized transactions totaling $131.30 USD. The activity was categorized under pattern 'card_not_present_new_device', conducted via online channel. Cardholder verification confirmed that the cardholder did not authorize the transactions and remained in possession of the card. Investigation of the associated infrastructure identified device profile 'SM-G610F Build/NRD90M |  | chrome 66.0 for android | ', which is linked to 3 other cardholder accounts (C05595-K1, C05678-K1, C03938-K1), indicating a coordinated compromise. In accordance with Bank Fraud Policy Rule R2, a Suspicious Activity Report is filed. Card C11923-K2 has been blocked and connected accounts placed under enhanced monitoring.",
+    "subjects": [
+      "C11923",
+      "C11923-K2",
+      "C05595-K1",
+      "C05678-K1",
+      "C03938-K1"
+    ],
+    "total_amount_usd": 131.3,
+    "activity_dates": [
+      "2016-12-29",
+      "2016-12-29"
+    ]
+  },
+  "stop_reason": "Customer verification settled the verdict; evidence sufficient under policy stopping criteria.",
+  "tool_calls": 6,
+  "tokens": 570,
+  "latency_s": 0.03
+}

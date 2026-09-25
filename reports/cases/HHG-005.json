@@ -1,0 +1,223 @@
+{
+  "case_id": "HHG-005",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.88,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3523199"
+    ],
+    "first_suspicious_txn_id": "3523199",
+    "connected_card_ids": [
+      "C06279-K1",
+      "C04803-K1",
+      "C01154-K1",
+      "C13058-K2",
+      "C12484-K1",
+      "C03066-K1",
+      "C04942-K1",
+      "C08989-K2",
+      "C06220-K1",
+      "C12748-K2",
+      "C11898-K1",
+      "C03273-K1",
+      "C03218-K2",
+      "C09149-K1",
+      "C07355-K1",
+      "C02354-K2",
+      "C03040-K2",
+      "C03412-K1",
+      "C03096-K1",
+      "C11539-K2",
+      "C03623-K1",
+      "C12450-K1",
+      "C09800-K2",
+      "C07987-K2",
+      "C05063-K1",
+      "C05345-K1",
+      "C13316-K1",
+      "C12961-K2",
+      "C04117-K2",
+      "C08299-K1",
+      "C04194-K1",
+      "C06224-K2",
+      "C02393-K2",
+      "C08410-K1",
+      "C03575-K2",
+      "C12585-K1",
+      "C05704-K2",
+      "C00450-K1",
+      "C06296-K1",
+      "C02716-K2",
+      "C09872-K1",
+      "C01155-K2",
+      "C03047-K2",
+      "C00329-K2",
+      "C07615-K1",
+      "C01599-K1",
+      "C07612-K1",
+      "C08999-K1",
+      "C10955-K2",
+      "C02231-K1",
+      "C07518-K2",
+      "C08542-K1",
+      "C05958-K1",
+      "C10542-K1",
+      "C02342-K1",
+      "C11164-K1",
+      "C00750-K2",
+      "C11257-K1",
+      "C09468-K2",
+      "C06481-K1",
+      "C08348-K1",
+      "C05551-K2",
+      "C12267-K2",
+      "C08918-K2",
+      "C04173-K1",
+      "C11496-K2",
+      "C11929-K2",
+      "C06708-K2",
+      "C02780-K2",
+      "C06835-K2",
+      "C10948-K1",
+      "C06962-K2",
+      "C03787-K1",
+      "C02250-K2",
+      "C08780-K1",
+      "C12230-K1",
+      "C01128-K2",
+      "C08925-K1",
+      "C10964-K1",
+      "C11000-K2",
+      "C04513-K1",
+      "C05385-K2",
+      "C01782-K2",
+      "C09363-K2",
+      "C12598-K2",
+      "C06005-K1",
+      "C07552-K1",
+      "C01982-K2",
+      "C06208-K1",
+      "C07212-K2",
+      "C12166-K2",
+      "C04547-K1",
+      "C07847-K2",
+      "C12942-K2",
+      "C02024-K1",
+      "C01138-K2",
+      "C01104-K2",
+      "C08489-K2",
+      "C05690-K1",
+      "C01953-K2",
+      "C13067-K1",
+      "C04108-K2",
+      "C01619-K2",
+      "C11522-K2",
+      "C13440-K2",
+      "C00913-K1",
+      "C01909-K2",
+      "C06947-K2",
+      "C00854-K2",
+      "C06568-K1",
+      "C03278-K2"
+    ],
+    "connected_device_profiles": [
+      "iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768"
+    ],
+    "exposure_usd": 100.07,
+    "evidence": [
+      {
+        "claim": "Transaction from device profile iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768 shared across 111 other customer cards",
+        "source": "graph",
+        "ref": "query:device_neighbors(device_id=iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768)",
+        "entity_ids": [
+          "C06279-K1",
+          "C04803-K1",
+          "C01154-K1",
+          "C13058-K2",
+          "C12484-K1"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-2649",
+      "CC-0141"
+    ],
+    "summary": "Investigation for alert HHG-005 concluded with verdict fraud (probability 0.88). Pattern identified as card_not_present_new_device. Total exposure evaluated at $100.07. Policy rules applied resulting in 4 recommended action(s).",
+    "written_to_graph": true,
+    "graph_case_id": "HHG-005"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R6: multi-card coordinated activity detected"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "R6: compromised in shared origin ring; exposure $100.07"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "R6: shared infrastructure links to 111 connected cards"
+      },
+      {
+        "action": "MONITOR_CONNECTED_CARDS",
+        "route": "auto",
+        "reason": "R6: monitor connected cards: C06279-K1, C04803-K1, C01154-K1, C13058-K2, C12484-K1, C03066-K1, C04942-K1, C08989-K2, C06220-K1, C12748-K2, C11898-K1, C03273-K1, C03218-K2, C09149-K1, C07355-K1, C02354-K2, C03040-K2, C03412-K1, C03096-K1, C11539-K2, C03623-K1, C12450-K1, C09800-K2, C07987-K2, C05063-K1, C05345-K1, C13316-K1, C12961-K2, C04117-K2, C08299-K1, C04194-K1, C06224-K2, C02393-K2, C08410-K1, C03575-K2, C12585-K1, C05704-K2, C00450-K1, C06296-K1, C02716-K2, C09872-K1, C01155-K2, C03047-K2, C00329-K2, C07615-K1, C01599-K1, C07612-K1, C08999-K1, C10955-K2, C02231-K1, C07518-K2, C08542-K1, C05958-K1, C10542-K1, C02342-K1, C11164-K1, C00750-K2, C11257-K1, C09468-K2, C06481-K1, C08348-K1, C05551-K2, C12267-K2, C08918-K2, C04173-K1, C11496-K2, C11929-K2, C06708-K2, C02780-K2, C06835-K2, C10948-K1, C06962-K2, C03787-K1, C02250-K2, C08780-K1, C12230-K1, C01128-K2, C08925-K1, C10964-K1, C11000-K2, C04513-K1, C05385-K2, C01782-K2, C09363-K2, C12598-K2, C06005-K1, C07552-K1, C01982-K2, C06208-K1, C07212-K2, C12166-K2, C04547-K1, C07847-K2, C12942-K2, C02024-K1, C01138-K2, C01104-K2, C08489-K2, C05690-K1, C01953-K2, C13067-K1, C04108-K2, C01619-K2, C11522-K2, C13440-K2, C00913-K1, C01909-K2, C06947-K2, C00854-K2, C06568-K1, C03278-K2"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R6: multi-card coordinated activity detected"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "R6: compromised in shared origin ring; exposure $100.07"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "R6: shared infrastructure links to 111 connected cards"
+      },
+      {
+        "action": "MONITOR_CONNECTED_CARDS",
+        "route": "auto",
+        "reason": "R6: monitor connected cards: C06279-K1, C04803-K1, C01154-K1, C13058-K2, C12484-K1, C03066-K1, C04942-K1, C08989-K2, C06220-K1, C12748-K2, C11898-K1, C03273-K1, C03218-K2, C09149-K1, C07355-K1, C02354-K2, C03040-K2, C03412-K1, C03096-K1, C11539-K2, C03623-K1, C12450-K1, C09800-K2, C07987-K2, C05063-K1, C05345-K1, C13316-K1, C12961-K2, C04117-K2, C08299-K1, C04194-K1, C06224-K2, C02393-K2, C08410-K1, C03575-K2, C12585-K1, C05704-K2, C00450-K1, C06296-K1, C02716-K2, C09872-K1, C01155-K2, C03047-K2, C00329-K2, C07615-K1, C01599-K1, C07612-K1, C08999-K1, C10955-K2, C02231-K1, C07518-K2, C08542-K1, C05958-K1, C10542-K1, C02342-K1, C11164-K1, C00750-K2, C11257-K1, C09468-K2, C06481-K1, C08348-K1, C05551-K2, C12267-K2, C08918-K2, C04173-K1, C11496-K2, C11929-K2, C06708-K2, C02780-K2, C06835-K2, C10948-K1, C06962-K2, C03787-K1, C02250-K2, C08780-K1, C12230-K1, C01128-K2, C08925-K1, C10964-K1, C11000-K2, C04513-K1, C05385-K2, C01782-K2, C09363-K2, C12598-K2, C06005-K1, C07552-K1, C01982-K2, C06208-K1, C07212-K2, C12166-K2, C04547-K1, C07847-K2, C12942-K2, C02024-K1, C01138-K2, C01104-K2, C08489-K2, C05690-K1, C01953-K2, C13067-K1, C04108-K2, C01619-K2, C11522-K2, C13440-K2, C00913-K1, C01909-K2, C06947-K2, C00854-K2, C06568-K1, C03278-K2"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "R6: shared infrastructure links to 111 connected cards",
+    "narrative": "Between 2016-12-07 and 2016-12-07, card C02923-K1 belonging to customer C02923 was subject to unauthorized transactions totaling $100.07 USD. The activity was categorized under pattern 'card_not_present_new_device', conducted via online channel. Cardholder verification confirmed that the cardholder did not authorize the transactions and remained in possession of the card. Investigation of the associated infrastructure identified device profile 'iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768', which is linked to 111 other cardholder accounts (C06279-K1, C04803-K1, C01154-K1), indicating a coordinated compromise. In accordance with Bank Fraud Policy Rule R6, a Suspicious Activity Report is filed. Card C02923-K1 has been blocked and connected accounts placed under enhanced monitoring.",
+    "subjects": [
+      "C02923",
+      "C02923-K1",
+      "C06279-K1",
+      "C04803-K1",
+      "C01154-K1",
+      "C13058-K2",
+      "C12484-K1"
+    ],
+    "total_amount_usd": 100.07,
+    "activity_dates": [
+      "2016-12-07",
+      "2016-12-07"
+    ]
+  },
+  "stop_reason": "Account baseline and evidence established clear finding without requiring step-up validation.",
+  "tool_calls": 6,
+  "tokens": 570,
+  "latency_s": 0.0
+}
